@@ -1,4 +1,6 @@
 <script lang="ts">
+	export const prerender = true;
+
 	import { calculateRefundEligibility } from '$lib/eligibility-calculator';
 	import type { Trip } from '$lib/triplib';
 	import * as D from '$lib/datelib';
