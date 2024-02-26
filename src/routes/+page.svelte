@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { calculateRefundEligibility } from '$lib/eligibility-calculator';
+	import { optimalRefundEligibility } from '$lib/eligibility-calculator';
 	import type { Trip } from '$lib/triplib';
 	import * as D from '$lib/datelib';
 	import TripManager from './trip-manager.svelte';
 
 	let completionDate: Date | null = null;
-	let trips: Trip[] = [{ startDate: new Date(), endDate: new Date() }];
+	let trips: Trip[] = [
+		{ startDate: new Date(2023, 6 - 1, 9), endDate: new Date(2023, 8 - 1, 11) },
+		{ startDate: new Date(2023, 12 - 1, 1), endDate: new Date(2024, 1 - 1, 31) },
+		{ startDate: new Date(2024, 5 - 1, 24), endDate: new Date(2024, 6 - 1, 17) }
+	];
 
 	$: eligibility =
-		completionDate !== null ? calculateRefundEligibility(completionDate, trips) : undefined;
+		completionDate !== null ? optimalRefundEligibility(completionDate, trips) : undefined;
 </script>
 
 <h1>UK Overseas Stamp Duty Refund Eligibility Calculator</h1>

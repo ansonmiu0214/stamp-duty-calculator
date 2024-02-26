@@ -34,8 +34,8 @@ export function *xrange(startDate: Date, endDate: Date) {
     startDate = clone(startDate);
     endDate = clone(endDate);
 
-    startDate.setHours(/* hrs */ 0, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
-    endDate.setHours(/* hrs */ 0, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
+    startDate.setUTCHours(/* hrs */ 12, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
+    endDate.setUTCHours(/* hrs */ 12, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
 
     let currDate = clone(startDate);
 
@@ -50,8 +50,8 @@ export function daysBetween(startDate: Date, endDate: Date) {
     startDate = clone(startDate);
     endDate = clone(endDate);
 
-    startDate.setHours(/* hrs */ 0, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
-    endDate.setHours(/* hrs */ 0, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
+    startDate.setUTCHours(/* hrs */ 12, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
+    endDate.setUTCHours(/* hrs */ 12, /* mins */ 0, /* secs */ 0, /* millisecs */ 0);
 
     const millisecondsBetween = endDate.getTime() - startDate.getTime();
 
