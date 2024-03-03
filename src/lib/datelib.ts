@@ -9,6 +9,8 @@ class DateArithmetic {
     constructor(private date: Date) {}
 
     applyDelta({ days }: { days: number }) {
+        
+
         const millisecondsSinceUTC = this.date.getTime();
         const deltaInMilliseconds = (days * millisecondsInDay());
         this.date.setTime(millisecondsSinceUTC + deltaInMilliseconds);

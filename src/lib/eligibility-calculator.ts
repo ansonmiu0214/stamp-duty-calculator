@@ -49,9 +49,6 @@ const daysRequired = 183;
 export function refundEligibilityForWindow(windowStartDate: Date, windowEndDate: Date, trips: Trip[]): Eligibility {
     const window = { startDate: windowStartDate, endDate: windowEndDate };    
     const validTrips = trips.filter(trip => hasOverlap(trip, window));
-    console.log('number of valid trips', validTrips)
-    console.log('number of days', validTrips.map(trip => D.daysBetween(trip.startDate, trip.endDate)))
-    console.log('valid days', validTrips.map(trip => computeOverlap(trip, window)))
     const numValidDays = validTrips.map(trip => computeOverlap(trip, window)).reduce((x, y) => x + y, 0);
     
     if (numValidDays >= daysRequired) {
@@ -59,8 +56,6 @@ export function refundEligibilityForWindow(windowStartDate: Date, windowEndDate:
     }
     
     const numDaysMissing = daysRequired - numValidDays;
-    // console.log(window, 'numValidDays', numValidDays, 'numDaysMissing', numDaysMissing, 'lastTrip', validTrips[validTrips.length - 1])
-
     if (validTrips.length > 0 && D.daysBetween(validTrips[validTrips.length - 1].endDate, windowEndDate) >= numDaysMissing) {
         const latestValidTrip = validTrips[validTrips.length - 1];
         // possible - need to add 'numDaysMissing' between
@@ -123,21 +118,4 @@ export function optimalRefundEligibility(completionDate: Date, trips: Trip[]): E
             ...shortestTripExtension
         };
     }
-
-    // for each day in 'trips' that is '>= earliest start window'
-        // determine end window = start + 364 days
-        // find how many valid days
-        // maxWindow <-- max(maxWindow, numValidDays)
-        // if numValidDays >= MIN_RQMT:
-            // return 'yes, immediately!', { start, end }, numValidDays
-        // else:
-            // numMissing = MIN_RQMT - numValidDays
-            // if endWindow - lastTrip >= numMissing:
-                // store := 'no, but possible!', { start, end }, numMissing, lastTrip
-
-    // if store:
-        // return option with smallest 'numMissing' value
-
-    // else:
-        // return 'impossible', maxWindows
 }

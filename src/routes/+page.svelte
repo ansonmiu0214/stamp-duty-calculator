@@ -4,7 +4,21 @@
 	import * as D from '$lib/datelib';
 	import TripManager from './trip-manager.svelte';
 
-	let completionDate: Date | null = null;
+	// components
+	import CalendarIcon from 'lucide-svelte/icons/calendar';
+	import { type DateValue, DateFormatter, getLocalTimeZone } from '@internationalized/date';
+	import { cn } from '$lib/utils';
+	import { Button } from '$lib/components/ui/button';
+	import { Calendar } from '$lib/components/ui/calendar';
+	import * as Popover from '$lib/components/ui/popover';
+
+	const df = new DateFormatter('en-US', {
+		dateStyle: 'long'
+	});
+
+	let completionDate: DateValue | undefined = undefined;
+
+	// let completionDate: Date | null = null;
 	let trips: Trip[] = [
 		{ startDate: new Date(2023, 6 - 1, 9), endDate: new Date(2023, 8 - 1, 11) },
 		{ startDate: new Date(2023, 12 - 1, 1), endDate: new Date(2024, 1 - 1, 31) },
@@ -12,17 +26,33 @@
 	];
 
 	$: eligibility =
-		completionDate !== null ? optimalRefundEligibility(completionDate, trips) : undefined;
+		completionDate !== undefined
+			? optimalRefundEligibility(completionDate.toDate(getLocalTimeZone()), trips)
+			: undefined;
 </script>
 
-<h1>UK Overseas Stamp Duty Refund Eligibility Calculator</h1>
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+	UK Overseas Stamp Duty Refund Eligibility Calculator
+</h1>
 
-<label for="completion-date">Completion date:</label>
-<input
-	name="completion-date"
-	type="date"
-	on:change={(ev) => (completionDate = ev.currentTarget.valueAsDate)}
-/>
+<Popover.Root>
+	<Popover.Trigger asChild let:builder>
+		<Button
+			variant="outline"
+			class={cn(
+				'w-[280px] justify-start text-left font-normal',
+				!completionDate && 'text-muted-foreground'
+			)}
+			builders={[builder]}
+		>
+			<CalendarIcon class="mr-2 h-4 w-4" />
+			{completionDate ? df.format(completionDate.toDate(getLocalTimeZone())) : 'Completion date'}
+		</Button>
+	</Popover.Trigger>
+	<Popover.Content class="w-auto p-0">
+		<Calendar bind:value={completionDate} initialFocus />
+	</Popover.Content>
+</Popover.Root>
 
 <TripManager bind:trips {eligibility} />
 
