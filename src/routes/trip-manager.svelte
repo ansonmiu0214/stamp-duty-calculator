@@ -78,10 +78,11 @@
 <Table.Root>
 	<Table.Header>
 		<Table.Row>
-			<Table.Head>Start Date</Table.Head>
-			<Table.Head>End Date</Table.Head>
+			<Table.Head class="text-center">Start Date</Table.Head>
+			<Table.Head class="text-center">End Date</Table.Head>
+			<Table.Head class="text-center">Number of days</Table.Head>
 			{#if eligibility != undefined}
-				<Table.Head>Number of valid days</Table.Head>
+				<Table.Head>Number of <strong>valid</strong> days</Table.Head>
 			{/if}
 			<Table.Head>&nbsp;</Table.Head>
 		</Table.Row>
@@ -89,12 +90,14 @@
 	<Table.Body>
 		{#each trips as trip, i (i)}
 			<Table.Row>
-				<Table.Cell>{D.renderDate(trip.startDate)}</Table.Cell>
-				<Table.Cell>{D.renderDate(trip.endDate)}</Table.Cell>
+				<Table.Cell class="text-center">{D.renderDate(trip.startDate)}</Table.Cell>
+				<Table.Cell class="text-center">{D.renderDate(trip.endDate)}</Table.Cell>
+				<Table.Cell class="text-center">{D.daysBetween(trip.startDate, trip.endDate)}</Table.Cell>
 
 				{#if eligibility != undefined}
 					<Table.Cell
-						>{computeOverlap(trip, {
+						class="text-center"
+					>{computeOverlap(trip, {
 							startDate: eligibility.windowStartDate,
 							endDate: eligibility.windowEndDate
 						})}</Table.Cell
@@ -122,7 +125,7 @@
   </Alert.Root>
 {/if}
 
-<div class="grid gap-2">
+<div class="py-2">
 	<Popover.Root openFocus>
 		<Popover.Trigger asChild let:builder>
 			<Button
@@ -159,14 +162,14 @@
 			/>
 		</Popover.Content>
 	</Popover.Root>
+	
+	<Button
+		disabled={newTripRange === undefined ||
+			newTripRange.start === undefined ||
+			newTripRange.end === undefined ||
+			error !== undefined}
+		on:click={addTrip}
+	>
+		Add Trip
+	</Button>
 </div>
-
-<Button
-	disabled={newTripRange === undefined ||
-		newTripRange.start === undefined ||
-		newTripRange.end === undefined ||
-		error !== undefined}
-	on:click={addTrip}
->
-	Add Trip
-</Button>
