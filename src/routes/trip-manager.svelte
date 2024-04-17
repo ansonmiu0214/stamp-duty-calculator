@@ -153,13 +153,17 @@
 			</Button>
 		</Popover.Trigger>
 		<Popover.Content class="w-auto p-0" align="start">
-			<RangeCalendar
-				bind:value={newTripRange}
-				bind:startValue={newTripStart}
-				initialFocus
-				numberOfMonths={2}
-				placeholder={newTripRange?.start}
-			/>
+			<div class="grid gap-4">
+				<div class="space-y-2">
+					<RangeCalendar
+						bind:value={newTripRange}
+						bind:startValue={newTripStart}
+						initialFocus
+						numberOfMonths={2}
+						placeholder={newTripRange?.start}
+					/>
+				</div>
+			</div>
 		</Popover.Content>
 	</Popover.Root>
 	
